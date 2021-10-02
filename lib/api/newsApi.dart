@@ -77,4 +77,5 @@ class NewsApi {
       return ArticleResponse.withError("$error");
     }
   }
+  
 }
