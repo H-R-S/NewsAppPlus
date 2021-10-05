@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
-import 'package:news_app_plus/widgets/myTextField.dart';
-import 'package:news_app_plus/widgets/raisedGradientButton.dart';
-import 'package:news_app_plus/widgets/textFieldTag.dart';
+import 'package:news_app_plus/widgets/buttons/raisedGradientButton.dart';
+import 'package:news_app_plus/widgets/textField/myTextField.dart';
+import 'package:news_app_plus/widgets/textField/textFieldTag.dart';
 
 class SignUpPage extends StatefulWidget {
   @override

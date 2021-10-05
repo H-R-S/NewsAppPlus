@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_plus/pages/home.dart';
 import 'package:news_app_plus/pages/signUp.dart';
-import 'package:news_app_plus/widgets/myTextField.dart';
-import 'package:news_app_plus/widgets/raisedGradientButton.dart';
-import 'package:news_app_plus/widgets/textFieldTag.dart';
+import 'package:news_app_plus/widgets/buttons/raisedGradientButton.dart';
+import 'package:news_app_plus/widgets/textField/myTextField.dart';
+import 'package:news_app_plus/widgets/textField/textFieldTag.dart';
 
 class LoginWithEmailPage extends StatefulWidget {
   @override
@@ -111,10 +111,10 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
                         ],
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()));
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => HomePage()));
                       },
                     )),
               ],

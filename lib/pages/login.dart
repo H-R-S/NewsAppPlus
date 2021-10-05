@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app_plus/pages/home.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
 import 'package:news_app_plus/pages/signUp.dart';
-import 'package:news_app_plus/widgets/gradientLabelButton.dart';
+import 'package:news_app_plus/widgets/buttons/gradientLabelButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -57,10 +57,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     FlatButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()));
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => HomePage()));
                       },
                       textColor: Colors.black,
                       child: Text(
