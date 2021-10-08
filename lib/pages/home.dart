@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:news_app_plus/NewsView.dart';
 import 'package:news_app_plus/api/newsApi.dart';
 import 'package:news_app_plus/category.dart';
@@ -26,14 +27,17 @@ class _HomePageState extends State<HomePage> {
     "Health"
   ];
 
-  String placeHolderImage = "assets/img/placeholder.jpg";
+  String placeHolderImage =
+      "http://mapandan.gov.ph/wp-content/uploads/2018/03/no_image.jpg";
 
   bool isLoading = true;
+  bool isFavorite = false;
+
   getNewsByQuery(String query) async {
     Map element;
     int i = 0;
     String url =
-        "https://newsapi.org/v2/everything?q=$query&from=2021-10-03&to=2021-10-03&sortBy=popularity&apiKey=3bba92f4994941f2a1c4c802fb70c0c2";
+        "https://newsapi.org/v2/everything?q=$query&from=2021-10-08&to=2021-10-08&sortBy=popularity&apiKey=3bba92f4994941f2a1c4c802fb70c0c2";
     Response response = await get(Uri.parse(url));
     Map data = jsonDecode(response.body);
     setState(() {
@@ -48,19 +52,18 @@ class _HomePageState extends State<HomePage> {
             isLoading = false;
           });
 
-          if (i == 5) {
+          if (i == 8) {
             break;
           }
         } catch (e) {
           print(e);
         }
-        ;
       }
     });
   }
 
   getNewsofUS() async {
-    String url = NewsApi.newsApiUrl;
+    String url = NewsApi.topHeadLinesNewsApiUrl;
     Response response = await get(Uri.parse(url));
     Map data = jsonDecode(response.body);
     setState(() {
@@ -73,6 +76,20 @@ class _HomePageState extends State<HomePage> {
         });
       });
     });
+  }
+
+  final String customApiUrl =
+      "https://favorite-news-api.herokuapp.com/favoriteNews/addFavoriteNews";
+
+  Future<List<dynamic>> addFavoriteNews() async {
+    var result = await http.post(Uri.parse(customApiUrl), body: {
+      "newsHead": "",
+      "newsDes": "",
+      "newsImg": "",
+      "newsUrl": "",
+    });
+    print(json.decode(result.body)["message"]);
+    return json.decode(result.body);
   }
 
   @override
@@ -105,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                 height: 10,
               ),
               Container(
+                padding: EdgeInsets.all(15),
                 alignment: Alignment.topLeft,
                 child: Text(
                   "Hot Topics",
@@ -356,6 +374,42 @@ class _HomePageState extends State<HomePage> {
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 12),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            InkWell(
+                                                    child: newsModelList[index]
+                                                                .newsFav ==
+                                                            false
+                                                        ? Icon(
+                                                            Icons
+                                                                .favorite,
+                                                            color: Colors
+                                                                .redAccent)
+                                                        : Icon(Icons.favorite_border,
+                                                            color: Colors
+                                                                .redAccent),
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        newsModelList[index]
+                                                            .newsFav = true;
+                                                      });
+                                                      await addFavoriteNews();
+                                                    },
+                                                    onDoubleTap: () {
+                                                      setState(() {
+                                                        newsModelList[index]
+                                                            .newsFav = false;
+                                                      });
+                                                    },
+                                                  ),               
+                                                          ],
                                                         )
                                                       ],
                                                     )))
