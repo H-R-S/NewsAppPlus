@@ -27,10 +27,16 @@ class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.grey.shade200,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("ARNE NEWS"),
+        title: Text("NewsAPP+"),
+        leading: BackButton(
+          color: Colors.black,
+        ),
         centerTitle: true,
-      ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,),
       body: Container(
         child: WebView(
           initialUrl: finalUrl,

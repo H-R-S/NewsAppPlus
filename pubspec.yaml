@@ -31,6 +31,7 @@ dependencies:
   carousel_slider: 
   http:
   bottom_navy_bar:
+  firebase_core:
 
 dev_dependencies:
   flutter_test:

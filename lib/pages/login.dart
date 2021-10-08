@@ -57,10 +57,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     FlatButton(
                       onPressed: () {
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => HomePage()));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
                       },
                       textColor: Colors.black,
                       child: Text(
@@ -116,11 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                   label: "Continue with Google",
                   gradient: LinearGradient(
                     colors: <Color>[
-                      Colors.white,
-                      Colors.white,
+                      Colors.redAccent,
+                      Colors.redAccent,
                     ],
                   ),
-                  labelColor: Colors.black,
+                  labelColor: Colors.white,
                 ),
                 SizedBox(
                   height: 20,
