@@ -1,5 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app_plus/pages/favorite.dart';
 import 'package:news_app_plus/pages/home.dart';
 import 'package:news_app_plus/pages/profile.dart';
 import 'package:news_app_plus/pages/search.dart';
@@ -14,7 +15,7 @@ class _HomeState extends State<Home> {
 
   List listOfPages = [
     HomePage(),
-    SearchPage(),
+    FavoritePage(),
     SearchPage(),
     ProfilePage()
   ];
