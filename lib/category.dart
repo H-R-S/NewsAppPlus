@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:news_app_plus/api/newsApi.dart';
 import 'package:news_app_plus/models/newsQuery.dart';
 
 class Category extends StatefulWidget {
@@ -13,13 +15,14 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   List<NewsQueryModel> newsModelList = <NewsQueryModel>[];
   bool isLoading = true;
-  String placeHolderImage = "assets/img/placeholder.jpg";
+  bool isFavorite = false;
+  String placeHolderImage =
+      "http://mapandan.gov.ph/wp-content/uploads/2018/03/no_image.jpg";
 
   getNewsByQuery(String query) async {
     String url = "";
     if (query == "Top News" || query == "us") {
-      url =
-          "https://newsapi.org/v2/top-headlines?country=us&apiKey=3bba92f4994941f2a1c4c802fb70c0c2";
+      url = NewsApi.topHeadLinesNewsApiUrl;
     } else {
       url =
           "https://newsapi.org/v2/everything?q=$query&from=2021-10-03&to=2021-10-03&sortBy=popularity&apiKey=3bba92f4994941f2a1c4c802fb70c0c2";
@@ -39,9 +42,22 @@ class _CategoryState extends State<Category> {
     });
   }
 
+  final String customApiUrl =
+      "https://favorite-news-api.herokuapp.com/favoriteNews/addFavoriteNews";
+
+  Future<List<dynamic>> addFavoriteNews() async {
+    var result = await http.post(Uri.parse(customApiUrl), body: {
+      "newsHead": "",
+      "newsDes": "",
+      "newsImg": "",
+      "newsUrl": "",
+    });
+    print(json.decode(result.body)["message"]);
+    return json.decode(result.body);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getNewsByQuery(widget.Query);
   }
@@ -53,7 +69,7 @@ class _CategoryState extends State<Category> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: BackButton(
-          color: Colors.white,
+          color: Colors.black,
         ),
         centerTitle: true,
         elevation: 0,
@@ -174,6 +190,41 @@ class _CategoryState extends State<Category> {
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  InkWell(
+                                                    child: newsModelList[index]
+                                                                .newsFav ==
+                                                            false
+                                                        ? Icon(
+                                                            Icons
+                                                                .favorite,
+                                                            color: Colors
+                                                                .redAccent)
+                                                        : Icon(Icons.favorite_border,
+                                                            color: Colors
+                                                                .redAccent),
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        newsModelList[index]
+                                                            .newsFav = true;
+                                                      });
+                                                      await addFavoriteNews();
+                                                    },
+                                                    onDoubleTap: () {
+                                                      setState(() {
+                                                        newsModelList[index]
+                                                            .newsFav = false;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
                                               )
                                             ],
                                           )))
