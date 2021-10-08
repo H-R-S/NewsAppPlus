@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1037730832341",
+    "project_id": "hackathonnewsapp",
+    "storage_bucket": "hackathonnewsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037730832341:android:b7c7206f8d3859854be75c",
+        "android_client_info": {
+          "package_name": "com.example.news_app_plus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037730832341-5tgdvkn61fh6shr33af10gafg96fumnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkDWeMp3h5kDaHX4JRoKc26qdQtkVc3uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037730832341-5tgdvkn61fh6shr33af10gafg96fumnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
