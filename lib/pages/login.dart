@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app_plus/home.dart';
 import 'package:news_app_plus/pages/home.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
 import 'package:news_app_plus/pages/signUp.dart';
@@ -60,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomePage()));
+                                builder: (context) => Home()));
                       },
                       textColor: Colors.black,
                       child: Text(
