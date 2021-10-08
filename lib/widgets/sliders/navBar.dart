@@ -5,7 +5,8 @@ class NavBarSlider extends StatelessWidget {
   Function() onTap;
   List<String> navBarItem;
 
-  NavBarSlider({required this.navBarItem, required this.itemCount, required this.onTap});
+  NavBarSlider(
+      {required this.navBarItem, required this.itemCount, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
