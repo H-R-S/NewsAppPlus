@@ -1,14 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_plus/home.dart';
 import 'package:news_app_plus/pages/home.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
 import 'package:news_app_plus/pages/signUp.dart';
+import 'package:news_app_plus/services/auth.dart';
 import 'package:news_app_plus/widgets/buttons/gradientLabelButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
+String p =
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+RegExp regExp = new RegExp(p);
+String pattern = r'^(?:[+0][1-9])?[0-9]{10,12}$';
+RegExp regExps = new RegExp(pattern);
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -58,10 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     FlatButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Home()));
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Home()));
                       },
                       textColor: Colors.black,
                       child: Text(
@@ -112,7 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 20,
                 ),
                 GradientLabelButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    signInWithGoogle();
+                  },
                   icon: Icons.g_mobiledata,
                   label: "Continue with Google",
                   gradient: LinearGradient(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app_plus/widgets/buttons/raisedGradientButton.dart';
 import 'package:news_app_plus/widgets/textField/myTextField.dart';
 import 'package:news_app_plus/widgets/textField/textFieldTag.dart';
@@ -9,13 +11,89 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
+String p =
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+RegExp regExp = new RegExp(p);
+String pattern = r'^(?:[+0][1-9])?[0-9]{10,12}$';
+RegExp regExps = new RegExp(pattern);
+
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController usernameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+  bool passHide = true;
+  bool isChange = false;
+
   @override
   Widget build(BuildContext context) {
+    // Future send() async {
+    //   try {
+    //     UserCredential userCredential =
+    //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //       email: emailController.text,
+    //       password: passwordController.text,
+    //     );
+    //     print("Successfully User Created");
+
+    //     // Send Data To Firestore
+    //     await FirebaseFirestore.instance
+    //         .collection("users")
+    //         .doc(userCredential.user!.uid)
+    //         .set({
+    //       "username": usernameController.text.trim(),
+    //       "email": emailController.text.trim(),
+    //       "password": passwordController.text.trim(),
+    //       "uid": userCredential.user!.uid,
+    //     });
+    //     // Clear TextField
+    //     usernameController.clear();
+    //     emailController.clear();
+    //     passwordController.clear();
+    //     // Navigate to Login Screen
+    //     Navigator.of(context).pushNamed("/login");
+
+    //     setState(() {
+    //       isChange = false;
+    //     });
+    //     print("Successfully Data Added in Database");
+    //   } on FirebaseException catch (e) {
+    //     if (e.code == 'weak-password') {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(
+    //           content: Text("The password provided is too weak."),
+    //         ),
+    //       );
+    //       print("'weak-password' ==> The password provided is too weak.");
+    //     } else if (e.code == 'email-already-in-use') {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(
+    //             content: Text("The account already exists for that email.")),
+    //       );
+    //       print(
+    //           "'email-already-in-use' ==>The account already exists for that email.");
+    //     }
+    //   } catch (e) {
+    //     print("error ==> $e");
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text("$e")));
+    //   }
+    // }
+
+    void validation() {
+      final _form = _formKey.currentState;
+      if (_form!.validate()) {
+        // login();
+      } else {
+        print("no");
+        setState(() {
+          isChange = false;
+        });
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       extendBodyBehindAppBar: true,
@@ -42,6 +120,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 TextFieldTag(text: "Username"),
                 MyTextField(
+                  validator: (value) {
+                    if (value == "" || value == null) {
+                      return "Please Enter Username";
+                    } else if (value.length < 3) {
+                      return "Username is too short";
+                    }
+                  },
                   hint: "Enter username",
                   controller: emailController,
                   inputType: TextInputType.emailAddress,
@@ -49,6 +134,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 TextFieldTag(text: "Email"),
                 MyTextField(
+                  validator: (value) {
+                    if (value == "" || value == null) {
+                      return "Please Enter Email Address";
+                    } else if (!regExp.hasMatch(value)) {
+                      return "Email is Invalid";
+                    }
+                  },
                   hint: "Enter email address",
                   controller: emailController,
                   inputType: TextInputType.emailAddress,
@@ -56,6 +148,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 TextFieldTag(text: "Password"),
                 MyTextField(
+                  validator: (value) {
+                    if (value == "" || value == null) {
+                      return "Please Enter Password";
+                    } else if (value.length < 8) {
+                      return "Password is less than 8 characters";
+                    }
+                  },
                   hint: "Enter password",
                   controller: passwordController,
                   inputType: TextInputType.text,
@@ -100,8 +199,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           Colors.black54,
                         ],
                       ),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        validation();
+                        await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LoginWithEmailPage()));
@@ -109,7 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     )),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(
-                    "Already have an acc?",
+                    "Already have an account?",
                   ),
                   FlatButton(
                     onPressed: () {},

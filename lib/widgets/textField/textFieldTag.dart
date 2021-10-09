@@ -15,7 +15,7 @@ class TextFieldTag extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              color: Color(0xff0bc698),
+              color: Colors.black,
               fontSize: 20,
             ),
           ),
