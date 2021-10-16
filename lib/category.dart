@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -13,6 +14,9 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
+
+  final userId = FirebaseAuth.instance.currentUser!.uid.toString();
+  
   List<NewsQueryModel> newsModelList = <NewsQueryModel>[];
   bool isLoading = true;
   bool isFavorite = false;
@@ -42,19 +46,7 @@ class _CategoryState extends State<Category> {
     });
   }
 
-  final String customApiUrl =
-      "https://favorite-news-api.herokuapp.com/favoriteNews/addFavoriteNews";
-
-  Future<List<dynamic>> addFavoriteNews() async {
-    var result = await http.post(Uri.parse(customApiUrl), body: {
-      "newsHead": "",
-      "newsDes": "",
-      "newsImg": "",
-      "newsUrl": "",
-    });
-    print(json.decode(result.body)["message"]);
-    return json.decode(result.body);
-  }
+  final String customApiUrl = NewsApi.customApiUrl;
 
   @override
   void initState() {
@@ -75,164 +67,188 @@ class _CategoryState extends State<Category> {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                    height: 80,
-                    child: Image.asset("assets/logos/newsAppLogo.png")),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(15, 25, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        widget.Query,
-                        style: TextStyle(
-                            fontSize: 39,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: ""),
-                      ),
-                    ),
-                  ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Center(
+                  child: Container(
+                      height: 80,
+                      child: Image.asset("assets/logos/newsAppLogo.png")),
                 ),
-              ),
-              isLoading
-                  ? Container(
-                      height: MediaQuery.of(context).size.height - 500,
-                      child: Center(
-                        child: CircularProgressIndicator(),
+                Container(
+                  margin: EdgeInsets.fromLTRB(15, 25, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 12,
                       ),
-                    )
-                  : ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: newsModelList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              elevation: 1.0,
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: Image.network(
-                                        // ignore: unnecessary_null_comparison
-                                        newsModelList[index].newsImg == null
-                                            ? placeHolderImage
-                                            : newsModelList[index].newsImg,
-                                        fit: BoxFit.contain,
-                                      )),
-                                  Positioned(
-                                      left: 0,
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black12
-                                                        .withOpacity(0),
-                                                    Colors.black
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter)),
-                                          padding: EdgeInsets.fromLTRB(
-                                              15, 15, 10, 8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                newsModelList[index].newsHead ==
-                                                        null
-                                                    ? ""
-                                                    : newsModelList[index]
-                                                        .newsHead,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                newsModelList[index]
-                                                            .newsDes
-                                                            .length >
-                                                        50
-                                                    ? "${newsModelList[index].newsDes.substring(0, 55)}...."
-                                                    : newsModelList[index]
-                                                                .newsDes ==
-                                                            null
-                                                        ? ""
-                                                        : newsModelList[index]
-                                                                    .newsDes
-                                                                    .length >
-                                                                50
-                                                            ? "${newsModelList[index].newsDes.substring(0, 55)}...."
-                                                            : newsModelList[
-                                                                    index]
-                                                                .newsDes,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  InkWell(
-                                                    child: newsModelList[index]
-                                                                .newsFav ==
-                                                            false
-                                                        ? Icon(
-                                                            Icons
-                                                                .favorite,
-                                                            color: Colors
-                                                                .redAccent)
-                                                        : Icon(Icons.favorite_border,
-                                                            color: Colors
-                                                                .redAccent),
-                                                    onTap: () async {
-                                                      setState(() {
-                                                        newsModelList[index]
-                                                            .newsFav = true;
-                                                      });
-                                                      await addFavoriteNews();
-                                                    },
-                                                    onDoubleTap: () {
-                                                      setState(() {
-                                                        newsModelList[index]
-                                                            .newsFav = false;
-                                                      });
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          )))
-                                ],
-                              )),
-                        );
-                      }),
-            ],
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          widget.Query,
+                          style: TextStyle(
+                              fontSize: 39,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: ""),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                isLoading
+                    ? Container(
+                        height: MediaQuery.of(context).size.height - 500,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: newsModelList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin:
+                                EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                elevation: 1.0,
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.network(
+                                          // ignore: unnecessary_null_comparison
+                                          newsModelList[index].newsImg == null
+                                              ? placeHolderImage
+                                              : newsModelList[index].newsImg,
+                                          fit: BoxFit.contain,
+                                        )),
+                                    Positioned(
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.black12
+                                                          .withOpacity(0),
+                                                      Colors.black
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter)),
+                                            padding: EdgeInsets.fromLTRB(
+                                                15, 15, 10, 8),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  newsModelList[index].newsHead ==
+                                                          null
+                                                      ? ""
+                                                      : newsModelList[index]
+                                                          .newsHead,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  newsModelList[index]
+                                                              .newsDes
+                                                              .length >
+                                                          50
+                                                      ? "${newsModelList[index].newsDes.substring(0, 55)}...."
+                                                      : newsModelList[index]
+                                                                  .newsDes ==
+                                                              null
+                                                          ? ""
+                                                          : newsModelList[index]
+                                                                      .newsDes
+                                                                      .length >
+                                                                  50
+                                                              ? "${newsModelList[index].newsDes.substring(0, 55)}...."
+                                                              : newsModelList[
+                                                                      index]
+                                                                  .newsDes,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              InkWell(
+                                                                child: newsModelList[
+                                                                                index]
+                                                                            .newsFav ==
+                                                                        true
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .favorite,
+                                                                        color: Colors
+                                                                            .redAccent)
+                                                                    : Icon(
+                                                                        Icons
+                                                                            .favorite_border,
+                                                                        color: Colors
+                                                                            .redAccent),
+                                                                onTap: () async {
+                                                                  setState(() {
+                                                                    newsModelList[
+                                                                            index]
+                                                                        .newsFav = true;
+                                                                  });
+                                                                  await http.post(
+                                                                      Uri.parse(
+                                                                          customApiUrl),
+                                                                      body: {
+                                                                        "userUid":
+                                                                            "$userId",
+                                                                        "newsHead":
+                                                                            "${newsModelList[index]
+                                                                                .newsHead}",
+                                                                        "newsDes":
+                                                                            "${newsModelList[index]
+                                                                                .newsDes}",
+                                                                        "newsImg":
+                                                                            "${newsModelList[index]
+                                                                                .newsImg}",
+                                                                        "newsUrl":
+                                                                            "${newsModelList[index]
+                                                                                .newsUrl}",
+                                                                        "newsFav":
+                                                                            "${newsModelList[index]
+                                                                                .newsFav}"
+                                                                      });
+                                                                  // print(body);
+                                                                },
+                      
+                                                              ),
+                                                            ],
+                                                          )
+                                              ],
+                                            )))
+                                  ],
+                                )),
+                          );
+                        }),
+              ],
+            ),
           ),
         ),
       ),
