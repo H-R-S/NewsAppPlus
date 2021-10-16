@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "1037730832341",
-    "project_id": "hackathonnewsapp",
-    "storage_bucket": "hackathonnewsapp.appspot.com"
+    "project_number": "624786652693",
+    "project_id": "newsappplus-hackathonapp",
+    "storage_bucket": "newsappplus-hackathonapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1037730832341:android:b7c7206f8d3859854be75c",
+        "mobilesdk_app_id": "1:624786652693:android:f7c3ef47bc3ab16238181c",
         "android_client_info": {
           "package_name": "com.example.news_app_plus"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1037730832341-5tgdvkn61fh6shr33af10gafg96fumnb.apps.googleusercontent.com",
+          "client_id": "624786652693-3a9h805enad6uqcln48fpdg174hk3vim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.news_app_plus",
+            "certificate_hash": "ffa27e1177df0a47ad7ad5a8bc6f9188568cd03d"
+          }
+        },
+        {
+          "client_id": "624786652693-5d9e0fjltufh4rdco7r6as7p7aumogee.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBkDWeMp3h5kDaHX4JRoKc26qdQtkVc3uk"
+          "current_key": "AIzaSyDpUd4pZG9Zci2fgpNOEsAya7NWEnAiK-A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1037730832341-5tgdvkn61fh6shr33af10gafg96fumnb.apps.googleusercontent.com",
+              "client_id": "624786652693-5d9e0fjltufh4rdco7r6as7p7aumogee.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
