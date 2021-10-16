@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
 
   List listOfPages = [
     HomePage(),
-    FavoritePage(),
+    FavoriteNewsPage(),
     SearchPage(),
     ProfilePage()
   ];
