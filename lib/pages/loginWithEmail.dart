@@ -178,13 +178,7 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
                             Colors.black54,
                           ],
                         ),
-                        onPressed: () {
-                          validation();
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => HomePage()));
-                        },
+                        onPressed: () {},
                       )),
                 ],
               ),
