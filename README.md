@@ -2,6 +2,9 @@
 
 A new Flutter project.
 
+## Custom API:
+GitHub repo Link: https://github.com/H-R-S/CustomApi-NewsAppPlus
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
