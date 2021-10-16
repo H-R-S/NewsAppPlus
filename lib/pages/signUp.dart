@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_plus/pages/loginWithEmail.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app_plus/widgets/buttons/raisedGradientButton.dart';
 import 'package:news_app_plus/widgets/textField/myTextField.dart';
@@ -128,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   },
                   hint: "Enter username",
-                  controller: emailController,
+                  controller: usernameController,
                   inputType: TextInputType.emailAddress,
                   isPassword: false,
                 ),
@@ -199,20 +198,19 @@ class _SignUpPageState extends State<SignUpPage> {
                           Colors.black54,
                         ],
                       ),
-                      onPressed: () async {
-                        validation();
-                        await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginWithEmailPage()));
-                      },
+                      onPressed: () {},
                     )),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(
                     "Already have an account?",
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginWithEmailPage()));
+                    },
                     textColor: Color(0xff02645f),
                     child: Text(
                       "Login",
@@ -227,4 +225,26 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+  // Future<void> signUpWithMail() async {
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //         email: emailController.text, password: passwordController.text);
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             content: Text('Success sign up'),
+  //           );
+  //         });
+  //   } on FirebaseAuthException catch (e) {
+  //     print(e.message);
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             content: Text(e.message!),
+  //           );
+  //         });
+  //   }
 }
